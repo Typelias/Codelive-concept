@@ -1,4 +1,4 @@
-var socket = new WebSocket("ws://192.168.1.136:8080/ws");
+var socket = new WebSocket("ws://typelias.tk:80/ws");
 
 let connect = cb =>{
     console.log("connecting");
