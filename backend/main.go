@@ -47,5 +47,5 @@ func main(){
 	})
 
 	http.Handle("/",router)
-	http.ListenAndServe(":8080",nil)
+	http.ListenAndServe(":80",nil)
 }
