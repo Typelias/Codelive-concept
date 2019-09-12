@@ -19,20 +19,9 @@ class App extends Component {
     editor = this.ace.editor;
     editor.$blockScrolling = Infinity;
     //editor.keyBinding.$defaultHandler.commandKeyBinding = {};
-    document.getElementById("ace-editor").firstChild.addEventListener("change", (event) => {
-      //console.log(event.key);
-      /*if (event.key === "Shift" ||
-        event.key === "Control" ||
-        event.key === "AltGraph" ||
-        event.key === "Alt" ||
-        event.key === "ArrowUp" ||
-        event.key === "ArrowDown" ||
-        event.key === "ArrowLeft" ||
-        event.key === "ArrowRight") {
-        console.log(event.key);
-        return;
-      }*/
-      //sendMsg(String(editor.getValue()))
+    delete editor.keyBinding.$defaultHandler.commandKeyBinding["backspace"]
+    document.getElementById("ace-editor").firstChild.addEventListener("keydown", (event) => {
+      console.log("HELLO");
       changed = true;
     });
     connect(msg => {
