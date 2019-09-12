@@ -56,6 +56,8 @@ class App extends Component {
         editorProps={{ $blockScrolling: true }}
         onChange={this.send}
         style={{ height: '400px' }}
+        enableBasicAutocompletion="true"
+        enableSnippets="true"
         ref={instance => { this.ace = instance; }} // Let's put things into scope
       />
     );
