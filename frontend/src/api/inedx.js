@@ -1,8 +1,9 @@
 var socket = new WebSocket("ws://typelias.tk:80/ws");
 
-let connect = cb =>{
+
+let connect = cb => {
     console.log("connecting");
-    socket.onopen = () =>{
+    socket.onopen = () => {
         console.log("Connection successfull");
     };
 
@@ -14,14 +15,15 @@ let connect = cb =>{
         console.log("Socket cloesed: ", event);
     };
 
-    socket.onerror = error =>{
+    socket.onerror = error => {
         console.log("Error: ", error);
-    };    
+    };
 };
 
-let sendMsg = msg =>{
+let sendMsg = msg => {
     console.log("Sending:", msg);
     socket.send(msg);
+
 };
 
-export {connect, sendMsg};
+export { connect, sendMsg };
