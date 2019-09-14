@@ -2,8 +2,13 @@ package websocket
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
+	//"os"
+	"os/exec"
+	//"path/filepath"
+	"strings"
 
 	"github.com/gorilla/websocket"
 )
@@ -27,7 +32,7 @@ type Message struct {
 	Body string `json:"body"`
 }
 
-var latest Message
+var latest Message = Message{Type: 1, Body: ""}
 
 //WS
 
@@ -97,9 +102,54 @@ func (c *Client) Read() {
 			log.Println(err)
 			return
 		}
-		message := Message{Type: messageType, Body: string(p)}
-		latest = message
-		c.Pool.Broadcast <- message
-		fmt.Printf("Message Recived: %+v\n", message)
+		fmt.Println("Message recieved")
+		body := strings.Split(string(p), ";:")
+		fmt.Println(body)
+		if body[0] == "1" {
+			message := Message{Type: messageType, Body: body[1]}
+			latest = message
+			c.Pool.Broadcast <- message
+			fmt.Printf("Message Recived: %+v\n", message)
+		} else if body[0] == "2" {
+			message := Message{Type: messageType, Body: body[1]}
+			fmt.Printf("Message Recived: %+v\n", message)
+			compile(c, body[1])
+		}
+
 	}
+}
+
+func compile(c *Client, code string) {
+	//os.Mkdir("."+string(filepath.Separator)+"TEST", 0777)
+	if err := ioutil.WriteFile("main.cpp", []byte(code), 0777); err != nil {
+		panic(err)
+	}
+	make := "main : main.cpp\n\t g++ -o main main.cpp\n run : main\n\t ./main"
+	if err := ioutil.WriteFile("makefile", []byte(make), 0777); err != nil {
+		panic(err)
+	}
+
+	out, err := exec.Command("make run").Output()
+	if err != nil {
+		fmt.Println(err)
+	}
+	output := string(out[:])
+	fmt.Println(output)
+
+	/*out, err = exec.Command("./main").Output()
+	if err != nil {
+		fmt.Println(err)
+	}*/
+
+	//os.RemoveAll("main.cpp")
+	//os.RemoveAll("main")
+	//os.RemoveAll("makefile")
+
+	output = string(out[:])
+	fmt.Println(output)
+
+	//fmt.Println("Compiling code", code)
+	message := Message{Type: 2, Body: output}
+	c.Pool.Broadcast <- message
+
 }
