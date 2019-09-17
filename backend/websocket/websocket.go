@@ -124,7 +124,7 @@ func compile(c *Client, code string) {
 	if err := ioutil.WriteFile("main.cpp", []byte(code), 0777); err != nil {
 		panic(err)
 	}
-	make := "main : main.cpp\n\t g++ -o main main.cpp\n run : main\n\t ./main"
+	/*make := "main : main.cpp\n\t /usr/bin/g++ -o main main.cpp\n run : main\n\t ./main"
 	if err := ioutil.WriteFile("makefile", []byte(make), 0777); err != nil {
 		panic(err)
 	}
@@ -132,7 +132,13 @@ func compile(c *Client, code string) {
 	out, err := exec.Command("make run").Output()
 	if err != nil {
 		fmt.Println(err)
+	}*/
+
+	out, err := exec.Command("g++", "-o main main.cpp").Output()
+	if err != nil {
+		fmt.Println(err)
 	}
+
 	output := string(out[:])
 	fmt.Println(output)
 
