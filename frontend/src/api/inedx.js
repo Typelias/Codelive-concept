@@ -1,4 +1,4 @@
-var socket = new WebSocket("ws://localhost:80/ws");
+var socket = new WebSocket("ws://typelias.tk:80/ws");
 
 
 let connect = (codeMessage, compileMessage) => {
