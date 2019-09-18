@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	//"os"
+	"os"
 	"os/exec"
 	//"path/filepath"
 	"strings"
@@ -134,7 +134,7 @@ func compile(c *Client, code string) {
 		fmt.Println(err)
 	}*/
 
-	out, err := exec.Command("g++", "-o main main.cpp").Output()
+	out, err := exec.Command("g++", "main.cpp").Output()
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -142,13 +142,13 @@ func compile(c *Client, code string) {
 	output := string(out[:])
 	fmt.Println(output)
 
-	/*out, err = exec.Command("./main").Output()
+	out, err = exec.Command("./a.out").Output()
 	if err != nil {
 		fmt.Println(err)
-	}*/
+	}
 
-	//os.RemoveAll("main.cpp")
-	//os.RemoveAll("main")
+	os.RemoveAll("main.cpp")
+	os.RemoveAll("a.out")
 	//os.RemoveAll("makefile")
 
 	output = string(out[:])
